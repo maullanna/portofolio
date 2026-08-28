@@ -1,0 +1,784 @@
+@import url("https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&display=swap");
+@import "tailwindcss";
+
+:root {
+  /* Windows identity — locked, do not change */
+  --title-bg: #000080;
+  --desktop-bg: #008080;
+  --chrome-bg: #c0c0c0;
+  --chrome-bg-alt: #d4d0c8;
+  --content-bg: #ffffff;
+  --content-bg-alt: #ececec;
+  --border-shadow: #808080;
+  --bevel-light: #ffffff;
+  --bevel-dark: #808080;
+  --text: #111111;
+  --text-muted: #444444;
+  --success: #008000;
+  --warning: #92400e;
+
+  /* Yusuf identity — accent only */
+  --accent: #00a896;
+  --accent-dark: #00877a;
+
+  --font-retro: "VT323", monospace;
+  --font-mono: "Share Tech Mono", monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--desktop-bg);
+  color: var(--text);
+  font-family: var(--font-mono);
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--content-bg-alt);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--chrome-bg);
+  border: 1px solid var(--border-shadow);
+}
+
+/* Classic Win98 raised bevel (white top/left, grey bottom/right) */
+.win-bevel-out {
+  border-style: solid;
+  border-width: 2px;
+  border-top-color: var(--bevel-light);
+  border-left-color: var(--bevel-light);
+  border-right-color: var(--bevel-dark);
+  border-bottom-color: var(--bevel-dark);
+}
+
+/* Sunken bevel — pressed buttons / inset panels / table wells */
+.win-bevel-in {
+  border-style: solid;
+  border-width: 2px;
+  border-top-color: var(--bevel-dark);
+  border-left-color: var(--bevel-dark);
+  border-right-color: var(--bevel-light);
+  border-bottom-color: var(--bevel-light);
+}
+
+.win-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 18px;
+  background: var(--chrome-bg);
+  color: var(--text);
+  font-size: 11px;
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Lets panel content (fonts, avatar, etc.) scale with the window's own
+   rendered width via cqw units, instead of the viewport's. */
+.win-content-cq {
+  container-type: inline-size;
+}
+
+.win-btn:active {
+  border-top-color: var(--bevel-dark) !important;
+  border-left-color: var(--bevel-dark) !important;
+  border-right-color: var(--bevel-light) !important;
+  border-bottom-color: var(--bevel-light) !important;
+}
+
+/* Any raised (win-bevel-out) control that should invert to sunken while
+   pressed — buttons, not static frames. */
+.win-pressable:active {
+  border-top-color: var(--bevel-dark) !important;
+  border-left-color: var(--bevel-dark) !important;
+  border-right-color: var(--bevel-light) !important;
+  border-bottom-color: var(--bevel-light) !important;
+}
+/* =========================================================
+   HERO PANEL (stacks vertically in narrow windows/mobile)
+   ========================================================= */
+
+@media (min-width: 768px) {
+  .hero-panel {
+    align-items: center;
+  }
+}
+
+@media (max-width: 767px) {
+  .hero-panel {
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .hero-panel-photo {
+    width: 100% !important;
+    max-width: 220px;
+  }
+
+  .hero-panel-info {
+    width: calc(100vw - 80px);
+    text-align: center;
+  }
+
+  .hero-panel-info > div {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .projects-grid,
+  .responsive-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* =========================================================
+   BOOT WATERMARK (decorative, centered on desktop)
+   ========================================================= */
+
+.boot-progress-rail {
+  width: min(260px, 70vw);
+  height: 18px;
+  background: var(--content-bg);
+  overflow: hidden;
+}
+
+.boot-progress-fill {
+  height: 100%;
+  width: 35%;
+  background: repeating-linear-gradient(90deg, var(--accent) 0 12px, transparent 12px 16px);
+  animation: boot-progress-slide 1.6s linear infinite;
+}
+
+@keyframes boot-progress-slide {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(285%);
+  }
+}
+
+/* =========================================================
+   SKILLS PANEL
+   Windows 98 + Modern Developer Portfolio
+   ========================================================= */
+
+.pixel-art {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* =========================================================
+   MAIN PANEL
+   ========================================================= */
+
+.skills-panel-root {
+  width: 100%;
+  min-width: 0;
+  color: var(--text);
+  font-family: var(--font-mono);
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.skills-panel-head.layout-with-summary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  align-items: center;
+  gap: 22px;
+
+  padding: 16px 18px;
+
+  border: 1px solid #b8b8b8;
+  background: var(--content-bg);
+
+  min-height: 125px;
+}
+
+.skills-head-left {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-width: 0;
+}
+
+.skills-header-icon {
+  width: 58px;
+  height: 58px;
+  flex: 0 0 58px;
+}
+
+.skills-title {
+  margin: 0 0 5px;
+  font-family: var(--font-retro);
+  font-size: 34px;
+  line-height: 1;
+  letter-spacing: 0.5px;
+  color: #075f68;
+}
+
+.skills-sub {
+  margin: 0;
+  max-width: 680px;
+
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.4;
+
+  color: var(--text);
+}
+
+/* =========================================================
+   SUMMARY
+   ========================================================= */
+
+.skills-summary {
+  width: 100%;
+
+  padding: 12px 16px;
+
+  border: 1px solid #a9a9a9;
+  background: #f8f8f8;
+
+  box-shadow:
+    inset 1px 1px #ffffff,
+    inset -1px -1px #d0d0d0;
+}
+
+.summary-title {
+  margin-bottom: 9px;
+
+  font-family: var(--font-retro);
+  font-size: 18px;
+  line-height: 1;
+
+  color: #075f68;
+}
+
+.summary-list {
+  display: grid;
+  grid-template-columns: 130px minmax(0, 1fr);
+
+  gap: 5px 12px;
+
+  margin: 0;
+
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+
+.summary-list div {
+  display: contents;
+}
+
+.summary-list dt {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.summary-list dd {
+  margin: 0;
+
+  color: var(--text);
+  font-weight: 700;
+
+  text-align: left;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* =========================================================
+   TECHNOLOGY SKILLS
+   ========================================================= */
+
+.skills-grid {
+  display: grid;
+
+  /* DESKTOP: 4 COLUMNS */
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+
+  gap: 12px;
+
+  margin-top: 12px;
+}
+
+/* =========================================================
+   CATEGORY CARD
+   ========================================================= */
+
+.skills-category {
+  min-width: 0;
+
+  padding: 13px 14px;
+
+  background: linear-gradient(to bottom, #ffffff 0%, #f7f7f7 100%);
+
+  border: 1px solid #a8a8a8;
+
+  box-shadow:
+    inset 1px 1px #ffffff,
+    inset -1px -1px #d0d0d0;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.skills-category-head {
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  margin-bottom: 12px;
+
+  color: #075f68;
+}
+
+.cat-icon {
+  width: 28px;
+  height: 28px;
+
+  flex: 0 0 28px;
+}
+
+.cat-title {
+  font-family: var(--font-retro);
+  font-size: 20px;
+  line-height: 1;
+
+  white-space: nowrap;
+}
+
+/* =========================================================
+   SKILL LIST
+   ========================================================= */
+
+.skills-vertical-list {
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+
+  width: 100%;
+}
+
+/* =========================================================
+   SKILL ROW
+   ========================================================= */
+
+.skill-row {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    auto;
+
+  align-items: center;
+
+  gap: 8px;
+
+  min-height: 32px;
+
+  padding: 3px 2px;
+
+  cursor: default;
+}
+
+.skill-row:hover {
+  background: #eeeeee;
+}
+
+.skill-row:focus {
+  outline: 1px dotted var(--accent);
+  outline-offset: 1px;
+}
+
+/* =========================================================
+   SKILL NAME
+   ========================================================= */
+
+.skill-meta {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  min-width: 0;
+}
+
+.skill-dot {
+  width: 7px;
+  height: 7px;
+
+  flex: 0 0 7px;
+
+  background: var(--accent);
+
+  border-radius: 50%;
+}
+
+.skill-name {
+  min-width: 0;
+
+  font-family: var(--font-mono);
+  font-size: 13px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* =========================================================
+   HORIZONTAL PERCENTAGE
+   ========================================================= */
+
+.skill-percent {
+  display: grid;
+
+  grid-template-columns:
+    100px
+    34px;
+
+  align-items: center;
+
+  gap: 7px;
+
+  min-width: 141px;
+}
+
+.percent-rail {
+  width: 100px;
+  height: 7px;
+
+  background: #dedede;
+
+  border: 1px solid #b0b0b0;
+
+  box-shadow:
+    inset 1px 1px #999999,
+    inset -1px -1px #ffffff;
+
+  overflow: hidden;
+}
+
+.percent-fill {
+  height: 100%;
+
+  background: var(--accent);
+
+  transition: width 260ms ease;
+}
+
+.percent-label {
+  width: 34px;
+
+  font-family: var(--font-mono);
+  font-size: 12px;
+
+  text-align: right;
+
+  color: var(--text);
+}
+
+/* =========================================================
+   OTHER SKILLS
+   ========================================================= */
+
+.skills-other-and-focus {
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+
+  margin-top: 12px;
+}
+
+.skills-other {
+  width: 100%;
+
+  padding: 12px 14px;
+
+  border: 1px solid #a8a8a8;
+
+  background: #ffffff;
+
+  box-shadow:
+    inset 1px 1px #ffffff,
+    inset -1px -1px #d0d0d0;
+}
+
+.other-heading {
+  margin-bottom: 9px;
+
+  font-family: var(--font-retro);
+  font-size: 20px;
+  line-height: 1;
+
+  color: #075f68;
+}
+
+.other-list {
+  display: grid;
+
+  /* DESKTOP: 6 ITEMS IN ONE ROW */
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+
+  gap: 10px;
+}
+
+.other-tag {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  min-width: 0;
+  height: 62px;
+
+  padding: 8px 10px;
+
+  border: 1px solid #a8a8a8;
+
+  background: #f7f7f7;
+
+  box-shadow:
+    inset 1px 1px #ffffff,
+    inset -1px -1px #d0d0d0;
+
+  font-family: var(--font-mono);
+  font-size: 12px;
+
+  gap: 9px;
+
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.other-tag:hover {
+  background: #eeeeee;
+}
+
+.other-icon {
+  width: 30px;
+  height: 30px;
+
+  flex: 0 0 30px;
+}
+
+/* =========================================================
+   CURRENT FOCUS
+   ========================================================= */
+
+.current-focus {
+  display: grid;
+
+  grid-template-columns: 145px minmax(0, 1fr);
+
+  align-items: center;
+
+  min-height: 48px;
+
+  border: 1px solid #a8bfae;
+
+  background: #e7f3e9;
+
+  box-shadow:
+    inset 1px 1px #ffffff,
+    inset -1px -1px #c4d8c8;
+
+  padding: 7px 12px;
+}
+
+.focus-title {
+  font-family: var(--font-retro);
+  font-size: 18px;
+
+  color: #075f68;
+}
+
+.focus-body {
+  font-family: var(--font-mono);
+  font-size: 12px;
+
+  color: #185c2c;
+
+  line-height: 1.3;
+}
+
+/* =========================================================
+   TOOLTIP
+   ========================================================= */
+
+.skills-tooltip {
+  position: fixed;
+
+  transform: translate(-50%, -100%);
+
+  z-index: 9999;
+
+  padding: 5px 8px;
+
+  background: #ffffcc;
+
+  color: #111111;
+
+  border: 1px solid #000000;
+
+  box-shadow: 2px 2px 0 #000000;
+
+  font-family: var(--font-mono);
+  font-size: 12px;
+
+  pointer-events: none;
+}
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1200px) {
+  .skills-panel-head.layout-with-summary {
+    grid-template-columns:
+      minmax(0, 1fr)
+      300px;
+  }
+
+  .skill-percent {
+    grid-template-columns:
+      75px
+      32px;
+
+    min-width: 114px;
+  }
+
+  .percent-rail {
+    width: 75px;
+  }
+
+  .skill-name {
+    font-size: 12px;
+  }
+
+  .other-tag {
+    font-size: 11px;
+  }
+}
+
+/* =========================================================
+   SMALL TABLET
+   ========================================================= */
+
+@media (max-width: 1000px) {
+  .skills-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .other-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .skills-panel-head.layout-with-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .skills-summary {
+    max-width: none;
+  }
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+  .skills-panel-head.layout-with-summary {
+    padding: 12px;
+  }
+
+  .skills-head-left {
+    align-items: flex-start;
+  }
+
+  .skills-header-icon {
+    width: 45px;
+    height: 45px;
+
+    flex-basis: 45px;
+  }
+
+  .skills-title {
+    font-size: 28px;
+  }
+
+  .skills-sub {
+    font-size: 12px;
+
+    white-space: normal;
+  }
+
+  .skills-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .other-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .current-focus {
+    grid-template-columns: 1fr;
+
+    gap: 4px;
+  }
+}
+
+/* =========================================================
+   VERY SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 430px) {
+  .skills-panel-head.layout-with-summary {
+    gap: 12px;
+  }
+
+  .skills-head-left {
+    gap: 10px;
+  }
+
+  .skills-title {
+    font-size: 25px;
+  }
+
+  .skill-percent {
+    grid-template-columns:
+      60px
+      30px;
+
+    min-width: 97px;
+  }
+
+  .percent-rail {
+    width: 60px;
+  }
+
+  .other-list {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,1 @@
+Transparent-background SVG assets. The surrounding mockup background was removed while preserving the pixel artwork.
