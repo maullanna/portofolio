@@ -61,20 +61,15 @@ export default function Sidebar({ onOpenWindow, isMobile, open, onClose }: Sideb
         {desktopIcons.map(({ id, label, icon }) => (
           <button
             key={id}
-            onDoubleClick={() => {
+            onClick={() => {
               if (id === "recycle-bin") return;
               onOpenWindow(id);
               if (isMobile) onClose();
             }}
-            onClick={() => {
-              if (!isMobile || id === "recycle-bin") return;
-              onOpenWindow(id);
-              onClose();
-            }}
             className="flex flex-col items-center gap-1 px-1 py-2 cursor-pointer w-20"
             style={{ background: "transparent", border: "none" }}
           >
-            <Image src={icon} alt={label} width={48} height={48} style={{ imageRendering: "pixelated" }} />
+            <Image src={icon} alt={label} width={32} height={32} style={{ imageRendering: "pixelated" }} />
             <span
               className="text-center leading-tight"
               style={{
