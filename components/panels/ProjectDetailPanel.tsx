@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { createPortal } from "react-dom";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, TooltipContentProps } from "recharts";
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, TooltipContentProps } from "recharts";
+import { CHART_UP, CHART_GRID, CHART_TEXT } from "@/lib/chartTheme";
 import { Project } from "@/types";
 import {
   projectIcons,
@@ -52,10 +53,10 @@ function JourneyTooltip({ active, payload }: TooltipContentProps) {
   if (!active || !payload?.length) return null;
   const point = payload[0].payload as { label: string; time: string; activity: string };
   return (
-    <div className="win-bevel-out px-2 py-1.5 text-xs" style={{ background: "var(--content-bg)", fontFamily: "var(--font-mono)" }}>
-      <div className="font-bold">{point.label}</div>
-      <div style={{ color: "var(--text-muted)" }}>{point.time}</div>
-      <div>{point.activity}</div>
+    <div className="px-2 py-1.5 text-xs" style={{ background: "#1c2030", border: "1px solid var(--chart-grid)", fontFamily: "var(--font-mono)" }}>
+      <div className="font-bold" style={{ color: "#e8e8e8" }}>{point.label}</div>
+      <div style={{ color: "var(--chart-text)" }}>{point.time}</div>
+      <div style={{ color: "var(--chart-up)" }}>{point.activity}</div>
     </div>
   );
 }
@@ -234,16 +235,45 @@ export default function ProjectDetailPanel({ project }: ProjectDetailPanelProps)
                 <div style={{ fontSize: "12px", color: "var(--text-muted)" }}>Development activity over time</div>
               </div>
 
-              <div className="win-bevel-in p-3" style={{ background: "var(--content-bg-alt)", height: 220 }}>
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={activityData} margin={{ top: 8, right: 16, left: -12, bottom: 0 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="var(--border-shadow)" />
-                    <XAxis dataKey="label" tick={{ fontSize: 12 }} />
-                    <YAxis allowDecimals={false} tick={{ fontSize: 12 }} label={{ value: "Activity", angle: -90, position: "insideLeft", fontSize: 12 }} />
-                    <Tooltip content={JourneyTooltip} />
-                    <Line type="monotone" dataKey="progress" stroke="var(--accent)" strokeWidth={2.5} dot={{ r: 4 }} />
-                  </LineChart>
-                </ResponsiveContainer>
+              <div className="win-bevel-in" style={{ background: "var(--chart-bg)" }}>
+                <div className="flex items-center justify-between px-3 pt-3 pb-1">
+                  <div>
+                    <div style={{ fontSize: "10px", color: "var(--chart-text)", letterSpacing: "0.05em" }}>PROGRESS / MILESTONES</div>
+                    <div style={{ fontSize: "22px", fontWeight: 700, color: "#e8e8e8" }}>{project.milestones.length}</div>
+                  </div>
+                  <div
+                    className="px-2 py-1"
+                    style={{ fontSize: "12px", fontWeight: 700, color: "var(--chart-up)", background: "rgba(38, 166, 154, 0.12)" }}
+                  >
+                    ▲ 100%
+                  </div>
+                </div>
+
+                <div style={{ height: 180 }}>
+                  <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart data={activityData} margin={{ top: 8, right: 16, left: -12, bottom: 0 }}>
+                      <defs>
+                        <linearGradient id="progressFill" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stopColor={CHART_UP} stopOpacity={0.35} />
+                          <stop offset="100%" stopColor={CHART_UP} stopOpacity={0} />
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid strokeDasharray="3 3" stroke={CHART_GRID} vertical={false} />
+                      <XAxis dataKey="label" tick={{ fontSize: 11, fill: CHART_TEXT }} axisLine={{ stroke: CHART_GRID }} tickLine={false} />
+                      <YAxis allowDecimals={false} tick={{ fontSize: 11, fill: CHART_TEXT }} axisLine={false} tickLine={false} width={24} />
+                      <Tooltip content={JourneyTooltip} cursor={{ stroke: CHART_TEXT, strokeDasharray: "3 3" }} />
+                      <Area
+                        type="monotone"
+                        dataKey="progress"
+                        stroke={CHART_UP}
+                        strokeWidth={2.5}
+                        fill="url(#progressFill)"
+                        dot={{ r: 4, fill: CHART_UP, strokeWidth: 0 }}
+                        isAnimationActive={false}
+                      />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </div>
               </div>
 
               <div className="responsive-grid grid gap-3" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))" }}>

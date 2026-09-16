@@ -21,6 +21,13 @@
   --accent: #00a896;
   --accent-dark: #00877a;
 
+  /* Stock/crypto chart palette */
+  --chart-bg: #131722;
+  --chart-grid: #232734;
+  --chart-text: #787b86;
+  --chart-up: #26a69a;
+  --chart-down: #ef5350;
+
   --font-retro: "VT323", monospace;
   --font-mono: "Share Tech Mono", monospace;
 }
