@@ -102,7 +102,7 @@ export default function ProjectDetailPanel({ project }: ProjectDetailPanelProps)
   const hasArchitecture = Boolean(arch.frontend || arch.backend || arch.database);
 
   return (
-    <div style={{ fontFamily: "var(--font-mono)", color: "var(--text)" }}>
+    <div className="flex flex-col" style={{ fontFamily: "var(--font-mono)", color: "var(--text)", minHeight: "100%" }}>
       {/* Persistent header — always visible, above the tabs */}
       <div className="p-4 flex items-start justify-between gap-4 flex-wrap" style={{ borderBottom: "1px solid var(--border-shadow)", background: "var(--content-bg)" }}>
         <div className="flex items-start gap-3 min-w-0">
@@ -173,33 +173,33 @@ export default function ProjectDetailPanel({ project }: ProjectDetailPanelProps)
         })}
       </div>
 
-      <div className="p-5" style={{ background: "var(--content-bg)" }}>
+      <div className="p-5 flex-1" style={{ background: "var(--content-bg)" }}>
         {tab === "Overview" && (
           <div className="flex flex-col gap-5">
             <div>
-              <div className="flex items-center gap-2 mb-2">
-                <DocumentIcon size={18} />
-                <span style={{ fontSize: "14px", fontWeight: 700, color: "var(--success)" }}>OVERVIEW</span>
+              <div className="flex items-center gap-2 mb-3">
+                <DocumentIcon size={20} />
+                <span style={{ fontSize: "16px", fontWeight: 700, color: "var(--success)" }}>OVERVIEW</span>
               </div>
-              <p style={{ fontSize: "clamp(12px, 2.6cqw, 14px)", color: "var(--text-muted)", lineHeight: 1.6 }}>{project.longDescription}</p>
+              <p style={{ fontSize: "clamp(14px, 2.8cqw, 17px)", color: "var(--text-muted)", lineHeight: 1.7 }}>{project.longDescription}</p>
             </div>
 
-            <div className="responsive-grid grid gap-3" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))" }}>
-              <div className="win-bevel-in p-3" style={{ background: "var(--content-bg-alt)" }}>
-                <div className="mb-1.5" style={{ fontSize: "12px", fontWeight: 700, color: "var(--warning)" }}>⚠ PROBLEM</div>
-                <p style={{ fontSize: "12px", color: "var(--text-muted)", lineHeight: 1.5 }}>{project.problem}</p>
+            <div className="responsive-grid grid gap-4" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))" }}>
+              <div className="win-bevel-in p-4" style={{ background: "var(--content-bg-alt)" }}>
+                <div className="mb-2" style={{ fontSize: "14px", fontWeight: 700, color: "var(--warning)" }}>⚠ PROBLEM</div>
+                <p style={{ fontSize: "14px", color: "var(--text-muted)", lineHeight: 1.6 }}>{project.problem}</p>
               </div>
-              <div className="win-bevel-in p-3" style={{ background: "var(--content-bg-alt)" }}>
-                <div className="mb-1.5" style={{ fontSize: "12px", fontWeight: 700, color: "var(--accent-dark)" }}>🔧 SOLUTION</div>
-                <p style={{ fontSize: "12px", color: "var(--text-muted)", lineHeight: 1.5 }}>{project.solution}</p>
+              <div className="win-bevel-in p-4" style={{ background: "var(--content-bg-alt)" }}>
+                <div className="mb-2" style={{ fontSize: "14px", fontWeight: 700, color: "var(--accent-dark)" }}>🔧 SOLUTION</div>
+                <p style={{ fontSize: "14px", color: "var(--text-muted)", lineHeight: 1.6 }}>{project.solution}</p>
               </div>
-              <div className="win-bevel-in p-3" style={{ background: "var(--content-bg-alt)" }}>
-                <div className="mb-1.5 flex items-center gap-1.5" style={{ fontSize: "12px", fontWeight: 700, color: "var(--success)" }}>
-                  <ActivityIcon size={14} /> RESULT &amp; IMPACT
+              <div className="win-bevel-in p-4" style={{ background: "var(--content-bg-alt)" }}>
+                <div className="mb-2 flex items-center gap-1.5" style={{ fontSize: "14px", fontWeight: 700, color: "var(--success)" }}>
+                  <ActivityIcon size={16} /> RESULT &amp; IMPACT
                 </div>
-                <ul className="flex flex-col gap-1">
+                <ul className="flex flex-col gap-1.5">
                   {project.impact.map((line) => (
-                    <li key={line} className="flex items-start gap-1.5" style={{ fontSize: "12px", color: "var(--text-muted)" }}>
+                    <li key={line} className="flex items-start gap-1.5" style={{ fontSize: "14px", color: "var(--text-muted)", lineHeight: 1.5 }}>
                       <span className="shrink-0" style={{ color: "var(--success)" }}>▸</span>
                       <span>{line}</span>
                     </li>
@@ -208,13 +208,13 @@ export default function ProjectDetailPanel({ project }: ProjectDetailPanelProps)
               </div>
             </div>
 
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-4">
               {stats.map((s) => (
-                <div key={s.label} className="win-bevel-in flex items-center gap-2 px-3 py-2" style={{ background: "var(--content-bg-alt)" }}>
-                  <StarIcon size={16} />
+                <div key={s.label} className="win-bevel-in flex items-center gap-2 px-4 py-3" style={{ background: "var(--content-bg-alt)" }}>
+                  <StarIcon size={18} />
                   <div>
-                    <div style={{ fontSize: "15px", fontWeight: 700, color: "var(--accent-dark)" }}>{s.value}+</div>
-                    <div style={{ fontSize: "10px", color: "var(--text-muted)" }}>{s.label}</div>
+                    <div style={{ fontSize: "17px", fontWeight: 700, color: "var(--accent-dark)" }}>{s.value}+</div>
+                    <div style={{ fontSize: "12px", color: "var(--text-muted)" }}>{s.label}</div>
                   </div>
                 </div>
               ))}
