@@ -96,8 +96,7 @@ export default function HeroPanel({ onOpenProjects, onOpenJourney }: HeroPanelPr
           <button onClick={onOpenJourney} className="chrome-btn px-4 py-2.5" style={{ background: "var(--content-bg)" }}>
             <CalendarIcon size={16} />
             <span className="bp-label" style={{ fontSize: 11, fontWeight: 700 }}>Explore Journey</span>
-          </button>
-        </div>
+          </button>        </div>
       </div>
     </div>
   );

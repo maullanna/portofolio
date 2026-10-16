@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Phone } from "lucide-react";
-import { EnvelopeIcon } from "@/lib/pixel-icons";
+import { EnvelopeIcon, DocumentIcon } from "@/lib/pixel-icons";
 import { GithubIcon, LinkedinIcon } from "@/lib/icons";
 import { profile } from "@/data/profile";
 
@@ -37,6 +37,16 @@ export default function ContactPanel() {
           </a>
         ))}
       </div>
+
+      <a
+        href={profile.cvPath}
+        download
+        className="win-bevel-in flex items-center gap-2 px-2 py-2 text-xs"
+        style={{ background: "var(--content-bg-alt)", color: "var(--text)" }}
+      >
+        <DocumentIcon size={16} className="shrink-0" />
+        Download my CV (PDF)
+      </a>
 
       <button
         onClick={() => setSent(true)}

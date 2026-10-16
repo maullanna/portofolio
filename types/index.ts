@@ -86,6 +86,8 @@ export interface Profile {
   photoPath: string;
   /** CSS object-position for square crops of the photo (e.g. "50% 12%" keeps the head in frame) */
   photoPosition?: string;
+  /** Public path of the downloadable CV (PDF in /public) */
+  cvPath: string;
   experience: string;
   passion: string;
   about: string;
