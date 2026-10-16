@@ -22,7 +22,7 @@ export default function HeroPanel({ onOpenProjects, onOpenJourney }: HeroPanelPr
             height={260}
             priority
             className="block w-full h-auto"
-            style={{ objectFit: "cover", aspectRatio: "1 / 1" }}
+            style={{ objectFit: "cover", objectPosition: profile.photoPosition, aspectRatio: "1 / 1" }}
           />
           <span className="bp-label absolute top-1.5 left-1.5 px-1" style={{ background: "var(--title-bg)", color: "#ffffff", fontSize: 9 }}>
             IMG_001.PNG

@@ -12,7 +12,7 @@ export default function AboutPanel() {
             width={64}
             height={64}
             className="block"
-            style={{ objectFit: "cover", aspectRatio: "1 / 1" }}
+            style={{ objectFit: "cover", objectPosition: profile.photoPosition, aspectRatio: "1 / 1" }}
           />
         </div>
         <div>

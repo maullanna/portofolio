@@ -12,6 +12,7 @@ export const profile: Profile = {
   github: "github.com/maullanna",
   portfolio: "maullanna.github.io/Portofolio",
   photoPath: "/images/yusuf.png",
+  photoPosition: "50% 14%",
   experience: "3+ years",
   passion: "Backend systems, integrations & automation",
   about:

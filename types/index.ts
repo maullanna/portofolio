@@ -84,6 +84,8 @@ export interface Profile {
   github: string;
   portfolio: string;
   photoPath: string;
+  /** CSS object-position for square crops of the photo (e.g. "50% 12%" keeps the head in frame) */
+  photoPosition?: string;
   experience: string;
   passion: string;
   about: string;
