@@ -6,10 +6,11 @@ import { WindowState } from "@/types";
 import { projects } from "@/data/projects";
 import Window from "./Window";
 import Taskbar from "./Taskbar";
-import Sidebar, { desktopIcons } from "./Sidebar";
-import BootWatermark from "./BootWatermark";
+import Navbar, { desktopIcons, windowIndex } from "./Navbar";
+import PixelCursor from "./PixelCursor";
+import BootSequence from "./BootSequence";
 import { FolderIcon } from "@/lib/pixel-icons";
-import { SIDEBAR_WIDTH, TASKBAR_HEIGHT, DESKTOP_TOP_MARGIN } from "@/lib/layout";
+import { TASKBAR_HEIGHT, DESKTOP_TOP_MARGIN } from "@/lib/layout";
 import { useIsMobile } from "@/lib/useIsMobile";
 import HeroPanel from "../panels/HeroPanel";
 import ProjectsPanel from "../panels/ProjectsPanel";
@@ -22,13 +23,13 @@ import ContactPanel from "../panels/ContactPanel";
 const initialWindows: WindowState[] = [
   {
     id: "hero",
-    title: "Welcome  Mr.Yusuf",
+    title: "Welcome",
     isOpen: true,
     isMinimized: false,
     isMaximized: false,
     zIndex: 10,
     position: { x: 100, y: 60 },
-    size: { width: 520, height: 320 },
+    size: { width: 820, height: 460 },
   },
   {
     id: "projects",
@@ -97,8 +98,7 @@ export default function Desktop() {
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
   const maxZRef = useRef(20);
   const isMobile = useIsMobile();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const sidebarWidth = isMobile ? 0 : SIDEBAR_WIDTH;
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const bumpZ = () => {
     maxZRef.current += 1;
@@ -123,6 +123,17 @@ export default function Desktop() {
     setWindows((prev) => prev.map((w) => (w.id === id ? { ...w, isMinimized: true } : w)));
   }, []);
 
+  const visibleWindows = windows.filter((w) => w.isOpen && !w.isMinimized);
+  const activeId = visibleWindows.length
+    ? visibleWindows.reduce((top, w) => (w.zIndex > top.zIndex ? w : top)).id
+    : null;
+
+  // Win98 taskbar behaviour: clicking the focused window's button minimizes it
+  const handleTaskbarClick = (id: string) => {
+    if (id === activeId) minimizeWindow(id);
+    else openWindow(id);
+  };
+
   const toggleMaximize = useCallback((id: string) => {
     const z = bumpZ();
     setWindows((prev) => prev.map((w) => (w.id === id ? { ...w, isMaximized: !w.isMaximized, zIndex: z } : w)));
@@ -142,9 +153,11 @@ export default function Desktop() {
     const centerHero = () => {
       if (heroMovedRef.current) return;
       const heroBase = initialWindows.find((w) => w.id === "hero")!.size;
-      const currentSidebarWidth = window.innerWidth < 768 ? 0 : SIDEBAR_WIDTH;
-      const x = currentSidebarWidth + Math.max(24, (window.innerWidth - currentSidebarWidth - heroBase.width) / 2);
-      const y = Math.max(DESKTOP_TOP_MARGIN, (window.innerHeight - TASKBAR_HEIGHT - heroBase.height) / 2);
+      // Mirror Window's clamp() sizing so the hero is centred on its real rendered size
+      const width = Math.min(heroBase.width * 1.6, Math.max(heroBase.width * 0.85, window.innerWidth * 0.4));
+      const height = Math.min(heroBase.height * 1.6, Math.max(heroBase.height * 0.85, window.innerHeight * 0.34)) + 60;
+      const x = Math.max(12, (window.innerWidth - width) / 2);
+      const y = Math.max(DESKTOP_TOP_MARGIN + 12, DESKTOP_TOP_MARGIN + (window.innerHeight - DESKTOP_TOP_MARGIN - TASKBAR_HEIGHT - height) / 2);
       setWindows((prev) => prev.map((w) => (w.id === "hero" ? { ...w, position: { x, y } } : w)));
     };
     centerHero();
@@ -194,6 +207,9 @@ export default function Desktop() {
     return desktopIcons.find((i) => i.id === id)?.Icon;
   };
 
+  // Project details lives "inside" Projects, so it shares its number
+  const getIndex = (id: string) => windowIndex(id === "project-detail" ? "projects" : id);
+
   const [now, setNow] = useState<Date | null>(null);
 
   useEffect(() => {
@@ -210,24 +226,34 @@ export default function Desktop() {
       })
     : "--:--:--";
 
+  const dateStr = now
+    ? now.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })
+    : "";
+
   return (
     <div className="relative w-screen h-screen overflow-hidden" style={{ background: "var(--desktop-bg)" }}>
-      <Sidebar
+      <BootSequence />
+
+      <Navbar
         onOpenWindow={openWindow}
         isMobile={isMobile}
-        open={!isMobile || sidebarOpen}
-        onClose={() => setSidebarOpen(false)}
+        menuOpen={menuOpen}
+        onToggleMenu={() => setMenuOpen((v) => !v)}
+        onCloseMenu={() => setMenuOpen(false)}
+        openIds={windows.filter((w) => w.isOpen).map((w) => w.id)}
       />
 
-      <BootWatermark sidebarWidth={sidebarWidth} />
+      <PixelCursor />
 
       {/* Drag boundary — windows can never be dragged outside this area */}
-      <div ref={desktopAreaRef} className="absolute pointer-events-none" style={{ left: sidebarWidth, top: DESKTOP_TOP_MARGIN, right: 0, bottom: TASKBAR_HEIGHT }} />
+      <div ref={desktopAreaRef} className="absolute pointer-events-none" style={{ left: 0, top: DESKTOP_TOP_MARGIN, right: 0, bottom: TASKBAR_HEIGHT }} />
 
-      {/* Windows */}
+      {/* Windows — only visible ones are children, so AnimatePresence can play the closing curtain */}
       <AnimatePresence>
-        {windows.map((win) => (
+        {visibleWindows.map((win) => (
           <Window
+            isActive={win.id === activeId}
+            index={getIndex(win.id)}
             key={win.id}
             window={{ ...win, title: getTitle(win) }}
             onClose={closeWindow}
@@ -237,7 +263,6 @@ export default function Desktop() {
             onDragStart={handleDragStart}
             constraintsRef={desktopAreaRef}
             Icon={getIcon(win.id)}
-            sidebarWidth={sidebarWidth}
             isMobile={isMobile}
           >
             {getPanel(win.id)}
@@ -247,12 +272,14 @@ export default function Desktop() {
 
       <Taskbar
         windows={windows}
-        onWindowClick={openWindow}
+        activeId={activeId}
+        onWindowClick={handleTaskbarClick}
         time={timeStr}
+        date={dateStr}
         getIcon={getIcon}
-        sidebarWidth={sidebarWidth}
+        getIndex={getIndex}
         isMobile={isMobile}
-        onToggleSidebar={() => setSidebarOpen((v) => !v)}
+        onStart={() => (isMobile ? setMenuOpen((v) => !v) : openWindow("hero"))}
       />
     </div>
   );

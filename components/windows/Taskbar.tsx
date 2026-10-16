@@ -6,92 +6,76 @@ import { StartFlagIcon, SpeakerIcon, type PixelIconProps } from "@/lib/pixel-ico
 
 interface TaskbarProps {
   windows: WindowState[];
+  activeId: string | null;
   onWindowClick: (id: string) => void;
   time: string;
+  date: string;
   getIcon: (id: string) => ((props: PixelIconProps) => React.ReactElement) | undefined;
-  sidebarWidth: number;
+  getIndex: (id: string) => number | undefined;
   isMobile: boolean;
-  onToggleSidebar: () => void;
+  onStart: () => void;
 }
 
-export default function Taskbar({ windows, onWindowClick, time, getIcon, sidebarWidth, isMobile, onToggleSidebar }: TaskbarProps) {
-  const startIconSize = isMobile ? 20 : 47;
-  const windowIconSize = isMobile ? 14 : 27;
-  const traySpeakerSize = isMobile ? 14 : 20;
-  const buttonTextClass = isMobile ? "text-[10px]" : "text-xs";
-  const buttonMaxWidth = isMobile ? "90px" : "140px";
+export default function Taskbar({ windows, activeId, onWindowClick, time, date, getIcon, getIndex, isMobile, onStart }: TaskbarProps) {
+  const buttonMaxWidth = isMobile ? 96 : 180;
 
   return (
     <div
-      className="fixed bottom-0 right-0 flex items-center justify-between px-2 gap-2 z-50 win-bevel-out"
+      className="fixed bottom-0 right-0 flex items-stretch z-50"
       style={{
-        left: sidebarWidth,
+        left: 0,
         background: "var(--chrome-bg)",
         height: TASKBAR_HEIGHT,
-        borderLeft: "none",
+        borderTop: "1px solid var(--line)",
         color: "var(--text)",
       }}
     >
-      {/* Start + Window buttons */}
-      <div className="flex items-center gap-1.5 min-w-0 overflow-hidden">
-        {isMobile && (
-          <button
-            onClick={onToggleSidebar}
-            className="win-bevel-out px-2 py-1 text-sm font-bold flex items-center justify-center shrink-0"
-            style={{ background: "var(--chrome-bg)", fontFamily: "var(--font-mono)", minWidth: 32 }}
-            aria-label="Toggle sidebar"
-          >
-            ☰
-          </button>
-        )}
+      <button
+        onClick={onStart}
+        className="flex items-center gap-2 px-3 shrink-0 cursor-pointer transition-colors hover:bg-[var(--title-bg)] hover:text-white"
+        style={{ borderRight: "1px solid var(--line)", fontFamily: "var(--font-mono)" }}
+        aria-label={isMobile ? "Open menu" : "Start"}
+      >
+        <StartFlagIcon size={isMobile ? 18 : 20} />
+        <span className="bp-label" style={{ fontSize: 11, fontWeight: 700 }}>Start</span>
+      </button>
 
-        <button
-          className={`win-bevel-out px-2 py-1 ${buttonTextClass} font-bold flex items-center gap-1.5 shrink-0`}
-          style={{ background: "var(--chrome-bg)", fontFamily: "var(--font-mono)" }}
-        >
-          <StartFlagIcon size={startIconSize} />
-          Start
-        </button>
-
-        <div className="w-px h-6 mx-1 shrink-0" style={{ background: "var(--border-shadow)" }} />
-
-        <div className="flex items-center gap-1.5 min-w-0 overflow-hidden">
-          {windows
-            .filter((w) => w.isOpen)
-            .map((win) => {
-              const Icon = getIcon(win.id);
-              return (
-                <button
-                  key={win.id}
-                  onClick={() => onWindowClick(win.id)}
-                  className={
-                    win.isMinimized
-                      ? `win-bevel-in px-3 py-1 ${buttonTextClass} shrink-0 flex items-center gap-1.5`
-                      : `win-bevel-out px-3 py-1 ${buttonTextClass} shrink-0 flex items-center gap-1.5`
-                  }
-                  style={{
-                    background: "var(--chrome-bg)",
-                    fontFamily: "var(--font-mono)",
-                    maxWidth: buttonMaxWidth,
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  {Icon && <Icon size={windowIconSize} />}
-                  <span className="overflow-hidden text-ellipsis">{win.title}</span>
-                </button>
-              );
-            })}
-        </div>
+      <div className="flex items-center gap-1.5 px-2 min-w-0 flex-1 overflow-x-auto">
+        {windows
+          .filter((w) => w.isOpen)
+          .map((win) => {
+            const Icon = getIcon(win.id);
+            const idx = getIndex(win.id);
+            const active = win.id === activeId;
+            return (
+              <button
+                key={win.id}
+                onClick={() => onWindowClick(win.id)}
+                className="chrome-btn shrink-0 px-2 py-1"
+                style={{
+                  maxWidth: buttonMaxWidth,
+                  background: active ? "var(--title-bg)" : win.isMinimized ? "transparent" : "var(--content-bg)",
+                  color: active ? "#ffffff" : "var(--text)",
+                  borderStyle: win.isMinimized ? "dashed" : "solid",
+                  boxShadow: active ? "none" : "var(--shadow-hard-sm)",
+                }}
+                title={win.isMinimized ? `Restore ${win.title}` : active ? `Minimize ${win.title}` : win.title}
+              >
+                {idx !== undefined && <span className="bp-label opacity-60" style={{ fontSize: 9 }}>{String(idx).padStart(2, "0")}</span>}
+                {Icon && <Icon size={14} />}
+                <span className="bp-label truncate" style={{ fontSize: 10 }}>{win.title}</span>
+              </button>
+            );
+          })}
       </div>
 
       {/* System tray */}
-      <div className="win-bevel-in flex items-center gap-2 shrink-0 px-2 py-1" style={{ background: "var(--chrome-bg-alt)" }}>
-        <SpeakerIcon size={traySpeakerSize} />
-        <span className={buttonTextClass} style={{ fontFamily: "var(--font-mono)" }}>
-          {time}
-        </span>
+      <div className="flex items-center gap-2 shrink-0 px-3" style={{ borderLeft: "1px solid var(--line)", background: "var(--chrome-bg-alt)" }}>
+        <SpeakerIcon size={isMobile ? 14 : 16} />
+        <div className="flex flex-col items-end leading-none gap-0.5">
+          <span className="bp-label" style={{ fontSize: 11, fontWeight: 700, color: "var(--text)" }}>{time}</span>
+          {!isMobile && <span className="bp-label" style={{ fontSize: 9, color: "var(--text-muted)" }}>{date}</span>}
+        </div>
       </div>
     </div>
   );
