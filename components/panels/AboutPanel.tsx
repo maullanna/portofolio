@@ -50,11 +50,13 @@ export default function AboutPanel() {
                 {job.period}
                 {job.location ? ` · ${job.location}` : ""}
               </div>
-              <ul className="mt-1 flex flex-col gap-0.5">
-                {job.highlights.map((h) => (
-                  <li key={h}>▸ {h}</li>
-                ))}
-              </ul>
+              {job.highlights.length > 0 && (
+                <ul className="mt-1 flex flex-col gap-0.5">
+                  {job.highlights.map((h) => (
+                    <li key={h}>▸ {h}</li>
+                  ))}
+                </ul>
+              )}
             </div>
           ))}
         </div>

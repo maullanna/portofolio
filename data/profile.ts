@@ -37,9 +37,15 @@ export const profile: Profile = {
   ],
   workExperience: [
     {
+      role: "Fullstack Developer",
+      company: "PT ATS",
+      period: "21 September 2026 — Present",
+      highlights: [],
+    },
+    {
       role: "IT Staff, Backend Developer & IT Project Coordinator — Intern",
       company: "Akademi Komunitas Toyota Indonesia (AKTI)",
-      period: "June 2025 — Present",
+      period: "June 2025 — September 2026",
       location: "Karawang, West Java",
       highlights: [
         "Built full-featured HRIS (attendance, payroll, overtime, leave) with Laravel 12 + Node.js, incl. fingerprint device integration via SOAP/XML",

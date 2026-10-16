@@ -52,12 +52,19 @@ Graduated    : June 2019
 
 ## 4. WORK EXPERIENCE
 
+### Current — Fullstack Developer
+
+```
+Company  : PT ATS (Andika Teguh Setya) — display as "PT ATS" only
+Period   : 21 September 2026 – Present
+```
+
 ### A. IT Staff, Backend Developer & IT Project Coordinator — Intern
 
 ```
 Company  : Akademi Komunitas Toyota Indonesia (AKTI)
 Type     : Internship
-Period   : June 2025 – Present
+Period   : June 2025 – September 2026
 Location : Karawang, West Java
 ```
 
