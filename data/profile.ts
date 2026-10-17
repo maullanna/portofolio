@@ -13,7 +13,7 @@ export const profile: Profile = {
   portfolio: "maullanna.github.io/Portofolio",
   photoPath: "/images/yusuf.png",
   photoPosition: "50% 14%",
-  cvPath: "/cv/Yusuf%20Maulana%20CV.pdf",
+  cvPath: "/cv/Yusuf_Maulana_CV_Remote_SE.pdf",
   experience: "3+ years",
   passion: "Backend systems, integrations & automation",
   about:

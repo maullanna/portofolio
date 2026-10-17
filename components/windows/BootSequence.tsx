@@ -90,7 +90,7 @@ export default function BootSequence() {
         >
           <div className="flex items-start justify-between gap-6">
             <div className="bp-label" style={{ color: "rgba(255,255,255,0.7)" }}>
-              [Boot] Yusuf.OS — Build 2026
+              [Boot] Yusuf.OS  Build 2026
             </div>
             <div className="bp-label hidden sm:block" style={{ color: "rgba(255,255,255,0.5)" }}>
               Click or press any key to skip
