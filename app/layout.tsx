@@ -6,7 +6,7 @@ const grotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-grotesk" }
 const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });
 
 export const metadata: Metadata = {
-  title: "Yusuf Maulana  Backend & Fullstack Developer",
+  title: "BroYusuf Maulana",
   description: "Windows 98/XP styled developer portfolio of Yusuf Maulana.",
 };
 
