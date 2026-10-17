@@ -6,7 +6,11 @@ import { EnvelopeIcon, DocumentIcon } from "@/lib/pixel-icons";
 import { GithubIcon, LinkedinIcon } from "@/lib/icons";
 import { profile } from "@/data/profile";
 
-export default function ContactPanel() {
+interface ContactPanelProps {
+  onOpenCV: () => void;
+}
+
+export default function ContactPanel({ onOpenCV }: ContactPanelProps) {
   const [sent, setSent] = useState(false);
 
   const whatsapp = `62${profile.phone.replace(/^0/, "")}`;
@@ -38,15 +42,14 @@ export default function ContactPanel() {
         ))}
       </div>
 
-      <a
-        href={profile.cvPath}
-        download
-        className="win-bevel-in flex items-center gap-2 px-2 py-2 text-xs"
+      <button
+        onClick={onOpenCV}
+        className="win-bevel-in flex items-center gap-2 px-2 py-2 text-xs text-left cursor-pointer"
         style={{ background: "var(--content-bg-alt)", color: "var(--text)" }}
       >
         <DocumentIcon size={16} className="shrink-0" />
-        Download my CV (PDF)
-      </a>
+        Preview my CV (PDF)
+      </button>
 
       <button
         onClick={() => setSent(true)}

@@ -9,7 +9,7 @@ import Taskbar from "./Taskbar";
 import Navbar, { desktopIcons, windowIndex } from "./Navbar";
 import PixelCursor from "./PixelCursor";
 import BootSequence from "./BootSequence";
-import { FolderIcon } from "@/lib/pixel-icons";
+import { FolderIcon, DocumentIcon } from "@/lib/pixel-icons";
 import { TASKBAR_HEIGHT, DESKTOP_TOP_MARGIN } from "@/lib/layout";
 import { useIsMobile } from "@/lib/useIsMobile";
 import HeroPanel from "../panels/HeroPanel";
@@ -19,6 +19,7 @@ import AboutPanel from "../panels/AboutPanel";
 import SkillsPanel from "../panels/SkillsPanel";
 import JourneyPanel from "../panels/JourneyPanel";
 import ContactPanel from "../panels/ContactPanel";
+import CVPanel from "../panels/CVPanel";
 
 const initialWindows: WindowState[] = [
   {
@@ -90,6 +91,16 @@ const initialWindows: WindowState[] = [
     zIndex: 5,
     position: { x: 700, y: 160 },
     size: { width: 380, height: 320 },
+  },
+  {
+    id: "cv",
+    title: "Curriculum Vitae",
+    isOpen: false,
+    isMinimized: false,
+    isMaximized: false,
+    zIndex: 16,
+    position: { x: 220, y: 96 },
+    size: { width: 920, height: 600 },
   },
 ];
 
@@ -188,7 +199,9 @@ export default function Desktop() {
       case "journey":
         return <JourneyPanel />;
       case "contact":
-        return <ContactPanel />;
+        return <ContactPanel onOpenCV={() => openWindow("cv")} />;
+      case "cv":
+        return <CVPanel />;
       default:
         return null;
     }
@@ -204,11 +217,12 @@ export default function Desktop() {
 
   const getIcon = (id: string) => {
     if (id === "project-detail") return FolderIcon;
+    if (id === "cv") return DocumentIcon;
     return desktopIcons.find((i) => i.id === id)?.Icon;
   };
 
-  // Project details lives "inside" Projects, so it shares its number
-  const getIndex = (id: string) => windowIndex(id === "project-detail" ? "projects" : id);
+  // Project details lives "inside" Projects and the CV inside Contact, so they share those numbers
+  const getIndex = (id: string) => windowIndex(id === "project-detail" ? "projects" : id === "cv" ? "contact" : id);
 
   const [now, setNow] = useState<Date | null>(null);
 
