@@ -51,12 +51,7 @@ export default function ProjectsPanel({ onOpenProject, onOpenJourney, onOpenAbou
         <button onClick={onOpenHero} className="win-bevel-out px-2 py-1 text-xs cursor-pointer" style={{ background: "var(--chrome-bg)" }}>
           ‹ Back
         </button>
-        <button disabled className="win-bevel-out px-2 py-1 text-xs" style={{ background: "var(--chrome-bg)", color: "var(--text-muted)" }}>
-          Forward ›
-        </button>
-        <div className="win-bevel-in flex-1 px-2 py-1 text-xs min-w-0 truncate" style={{ background: "var(--content-bg)", color: "var(--text-muted)" }}>
-          C:\Users\Yusuf\Projects
-        </div>
+        <div className="flex-1" />
         <label className="flex items-center gap-1.5 text-xs shrink-0">
           <span style={{ color: "var(--text-muted)" }}>Sort by:</span>
           <select

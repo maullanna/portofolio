@@ -26,13 +26,13 @@ export default function JourneyPanel() {
   const isUp = delta >= 0;
 
   return (
-    <div className="p-4 flex flex-col gap-4" style={{ fontFamily: "var(--font-mono)", color: "var(--text)" }}>
+    <div className="p-4 flex flex-col gap-4" style={{ fontFamily: "var(--font-mono)", color: "var(--text)", fontSize: "clamp(12px, 1cqw, 14px)" }}>
       <div className="win-bevel-in" style={{ background: "var(--chart-bg)" }}>
         {/* Ticker header */}
         <div className="flex items-center justify-between px-3 pt-3 pb-1">
           <div>
             <div style={{ fontSize: "10px", color: "var(--chart-text)", letterSpacing: "0.05em" }}>DEV ACTIVITY / TOTAL</div>
-            <div style={{ fontSize: "22px", fontWeight: 700, color: "#e8e8e8" }}>{totalActivities}</div>
+            <div style={{ fontSize: "clamp(22px, 2.6cqw, 36px)", fontWeight: 700, color: "#e8e8e8" }}>{totalActivities}</div>
           </div>
           <div
             className="px-2 py-1"
@@ -48,7 +48,8 @@ export default function JourneyPanel() {
           </div>
         </div>
 
-        <div style={{ height: 140 }}>
+        {/* Chart grows with the window so a maximized log isn't half empty */}
+        <div style={{ height: "clamp(140px, 24cqw, 360px)" }}>
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={monthly} margin={{ top: 8, right: 12, left: -20, bottom: 0 }}>
               <defs>
@@ -67,8 +68,8 @@ export default function JourneyPanel() {
         </div>
       </div>
 
-      <div className="win-bevel-in overflow-auto" style={{ background: "var(--content-bg)", maxHeight: 220 }}>
-        <table className="w-full text-xs border-collapse">
+      <div className="win-bevel-in overflow-auto" style={{ background: "var(--content-bg)", maxHeight: "clamp(220px, 30cqw, 560px)" }}>
+        <table className="w-full border-collapse">
           <thead>
             <tr style={{ background: "var(--chrome-bg)" }}>
               {["Date", "Time", "Activity", "Project", "Status"].map((h) => (

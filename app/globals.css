@@ -147,15 +147,35 @@ body {
     align-items: center;
   }
 
-  .hero-panel-photo {
+  /* Photo card and the text block below share one column width */
+  .hero-panel-photo,
+  .hero-panel-info {
     width: 100% !important;
-    max-width: 220px;
+    max-width: 420px;
   }
 
   .hero-panel-info {
-    width: 100%;
     text-align: center;
-    align-items: center;
+    align-items: stretch;
+  }
+
+  /* Name on a single line, sized so it spans exactly the column width
+     (same edges as the photo and stats). Column = min(420px, window − 2×24px
+     padding); "YUSUF MAULANA." in Space Grotesk bold is ≈7.95em wide. */
+  .hero-name {
+    font-size: calc(min(420px, 100cqw - 48px) / 7.95) !important;
+    white-space: nowrap;
+  }
+
+  .hero-name-break {
+    display: none;
+  }
+
+  /* Buttons share the row so their edges line up with the photo and stats */
+  .hero-actions > * {
+    flex: 1 1 0;
+    justify-content: center;
+    white-space: nowrap;
   }
 
   .hero-panel-info > div {

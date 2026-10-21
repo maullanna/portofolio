@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { NAVBAR_HEIGHT } from "@/lib/layout";
+import { NAVBAR_HEIGHT, navbarHeight } from "@/lib/layout";
 import { ComputerIcon, FolderIcon, PersonIcon, ToolboxIcon, CalendarIcon, EnvelopeIcon, StartFlagIcon, type PixelIconProps } from "@/lib/pixel-icons";
 
 export interface DesktopIcon {
@@ -71,23 +71,24 @@ export default function Navbar({ onOpenWindow, isMobile, menuOpen, onToggleMenu,
   };
 
   const num = (id: string) => String(windowIndex(id)).padStart(2, "0");
+  const height = navbarHeight(isMobile);
 
   return (
     <>
       <nav
         className="fixed top-0 left-0 right-0 flex items-stretch"
-        style={{ height: NAVBAR_HEIGHT, background: "var(--chrome-bg)", borderBottom: "1px solid var(--line)", zIndex: 9999 }}
+        style={{ height, background: "var(--chrome-bg)", borderBottom: "1px solid var(--line)", zIndex: 9999 }}
         aria-label="Main"
       >
         {/* Brand — fills the remaining width, like Heron's logo cell */}
         <button
           onClick={() => open("hero")}
-          className="flex items-center gap-3 px-5 sm:px-8 cursor-pointer"
+          className="flex items-center gap-2.5 sm:gap-3 px-4 sm:px-8 cursor-pointer"
           style={{ color: "var(--ink)", flex: "1 0 auto" }}
           aria-label="Open My Portfolio"
         >
-          <StartFlagIcon size={32} />
-          <span style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 32, letterSpacing: "-0.03em" }}>YUSUF.OS</span>
+          <StartFlagIcon size={isMobile ? 22 : 32} />
+          <span style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: isMobile ? 22 : 32, letterSpacing: "-0.03em" }}>BroYusuf</span>
         </button>
 
         {!isMobile &&
@@ -101,10 +102,10 @@ export default function Navbar({ onOpenWindow, isMobile, menuOpen, onToggleMenu,
           ))}
 
         {isMobile ? (
-          <button onClick={onToggleMenu} className="nav-cell nav-link px-hover shrink-0" style={{ width: 120 }} aria-expanded={menuOpen} aria-label="Menu">
-            <PixelFill cols={11} rows={navRows} />
-            <span className="px-label bp-label" style={{ fontSize: 16 }}>{menuOpen ? "Close" : "Menu"}</span>
-            <span className="px-label nav-corner" aria-hidden="true">{menuOpen ? "✕" : "⌟"}</span>
+          <button onClick={onToggleMenu} className="nav-cell px-hover shrink-0 items-center justify-center gap-2 px-4" style={{ minWidth: 96 }} aria-expanded={menuOpen} aria-label="Menu">
+            <PixelFill cols={10} rows={navRows} />
+            <span className="px-label bp-label" style={{ fontSize: 13, fontWeight: 700 }}>{menuOpen ? "Close" : "Menu"}</span>
+            <span className="px-label" aria-hidden="true" style={{ fontSize: 14 }}>{menuOpen ? "✕" : "☰"}</span>
           </button>
         ) : (
           <button onClick={() => open(contact.id)} className="nav-cell nav-link nav-cta px-hover shrink-0" aria-label="Open Contact">
@@ -119,10 +120,10 @@ export default function Navbar({ onOpenWindow, isMobile, menuOpen, onToggleMenu,
       {/* Mobile dropdown menu */}
       {isMobile && menuOpen && (
         <>
-          <div className="fixed inset-0" style={{ top: NAVBAR_HEIGHT, background: "rgba(40,40,40,0.3)", zIndex: 9997 }} onClick={onCloseMenu} />
+          <div className="fixed inset-0" style={{ top: height, background: "rgba(40,40,40,0.3)", zIndex: 9997 }} onClick={onCloseMenu} />
           <div
             className="fixed left-0 right-0 flex flex-col"
-            style={{ top: NAVBAR_HEIGHT, background: "var(--chrome-bg)", borderBottom: "1px solid var(--line)", zIndex: 9998 }}
+            style={{ top: height, background: "var(--chrome-bg)", borderBottom: "1px solid var(--line)", zIndex: 9998 }}
           >
             {desktopIcons.map(({ id, label, icon }) => (
               <button

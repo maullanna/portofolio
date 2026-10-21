@@ -1,9 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useRef, useState, type RefObject } from "react";
+import type { RefObject } from "react";
 import { WindowState } from "@/types";
-import { NAVBAR_HEIGHT, TASKBAR_HEIGHT } from "@/lib/layout";
+import { TASKBAR_HEIGHT, navbarHeight } from "@/lib/layout";
 import type { PixelIconProps } from "@/lib/pixel-icons";
 
 interface WindowProps {
@@ -27,26 +27,11 @@ const curtain = {
   exit: { clipPath: "inset(0 0 100% 0)", opacity: 1 },
 };
 
-function windowPath(title: string) {
-  return `C:\\YUSUF\\${title.split("—")[0].trim().toUpperCase().replace(/\s+/g, "_")}`;
-}
 
 export default function Window({ window: win, onClose, onMinimize, onMaximize, onFocus, onDragStart, constraintsRef, children, Icon, isMobile, isActive, index }: WindowProps) {
-  const frameRef = useRef<HTMLDivElement>(null);
-  const [dims, setDims] = useState<{ w: number; h: number } | null>(null);
 
   const isVisible = win.isOpen && !win.isMinimized;
 
-  useEffect(() => {
-    const el = frameRef.current;
-    if (!el) return;
-    const ro = new ResizeObserver(([entry]) => {
-      const box = entry.borderBoxSize?.[0];
-      setDims({ w: Math.round(box?.inlineSize ?? el.offsetWidth), h: Math.round(box?.blockSize ?? el.offsetHeight) });
-    });
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, [isVisible, win.isMaximized, isMobile]);
 
   if (!isVisible) return null;
 
@@ -56,9 +41,9 @@ export default function Window({ window: win, onClose, onMinimize, onMaximize, o
     ? {
         position: "fixed" as const,
         left: 0,
-        top: NAVBAR_HEIGHT,
+        top: navbarHeight(isMobile),
         width: "100vw",
-        height: `calc(100vh - ${NAVBAR_HEIGHT + TASKBAR_HEIGHT}px)`,
+        height: `calc(100vh - ${navbarHeight(isMobile) + TASKBAR_HEIGHT}px)`,
         zIndex: win.zIndex,
         background: "var(--content-bg)",
         boxShadow: "none",
@@ -78,7 +63,6 @@ export default function Window({ window: win, onClose, onMinimize, onMaximize, o
 
   return (
     <motion.div
-      ref={frameRef}
       key={isFullScreen ? "maximized" : "normal"}
       drag={!isFullScreen}
       dragMomentum={false}
@@ -127,15 +111,6 @@ export default function Window({ window: win, onClose, onMinimize, onMaximize, o
         </div>
       </div>
 
-      {/* Path + live dimensions, like a drawing sheet header */}
-      <div
-        className="flex items-center justify-between gap-3 px-2.5 py-1 bp-label"
-        style={{ background: "var(--chrome-bg)", borderBottom: "1px solid var(--ink)", color: "var(--text-muted)" }}
-      >
-        <span className="truncate">{windowPath(win.title)}</span>
-        <span className="shrink-0">{dims ? `W ${dims.w} × H ${dims.h}` : ""}</span>
-      </div>
-
       {/* Window body */}
       <div
         className="flex-1 min-h-0 overflow-auto win-content-cq"
@@ -148,14 +123,16 @@ export default function Window({ window: win, onClose, onMinimize, onMaximize, o
         {children}
       </div>
 
-      {/* Status bar */}
-      <div
-        className="px-2.5 py-1 flex justify-between bp-label"
-        style={{ background: "var(--chrome-bg)", borderTop: "1px solid var(--ink)", color: "var(--text-muted)" }}
-      >
-        <span>Ready</span>
-        <span style={{ color: "var(--success)" }}>● Online</span>
-      </div>
+      {/* Status bar — hidden on phones, where every row of reading space counts */}
+      {!isMobile && (
+        <div
+          className="px-2.5 py-1 flex justify-between bp-label"
+          style={{ background: "var(--chrome-bg)", borderTop: "1px solid var(--ink)", color: "var(--text-muted)" }}
+        >
+          <span>Ready</span>
+          <span style={{ color: "var(--success)" }}>● Online</span>
+        </div>
+      )}
     </motion.div>
   );
 }
