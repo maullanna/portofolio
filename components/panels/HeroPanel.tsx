@@ -45,7 +45,7 @@ export default function HeroPanel({ onOpenProjects, onOpenJourney }: HeroPanelPr
           {[
             ["Status", <span key="s" style={{ color: "var(--success)" }}>● {profile.status}</span>],
             ["Exp.", profile.experience],
-            ["Based", "Karawang, ID"],
+            ["Based", "DKI Jakarta, ID"],
           ].map(([k, v], i, arr) => (
             <div
               key={k as string}
