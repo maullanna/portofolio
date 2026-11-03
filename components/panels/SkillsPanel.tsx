@@ -11,24 +11,12 @@ const CATEGORIES: Category[] = [
     icon: "/icon/category_backend.svg",
     skills: [
       { id: "php", label: "PHP" },
-      { id: "laravel", label: "Laravel" },
+      { id: "laravel", label: "Laravel 12" },
       { id: "codeigniter", label: "CodeIgniter" },
       { id: "node", label: "Node.js" },
-      { id: "python", label: "Python" },
       { id: "rest", label: "REST API" },
-    ],
-  },
-  {
-    id: "frontend",
-    label: "FRONTEND",
-    icon: "/icon/category_frontend.svg",
-    skills: [
-      { id: "react", label: "React.js" },
-      { id: "ts", label: "TypeScript" },
-      { id: "vue", label: "Vue.js" },
-      { id: "js", label: "JavaScript" },
-      { id: "html", label: "HTML" },
-      { id: "css", label: "CSS" },
+      { id: "soap", label: "SOAP/XML" },
+      { id: "integration", label: "Service Integration" },
     ],
   },
   {
@@ -38,21 +26,43 @@ const CATEGORIES: Category[] = [
     skills: [
       { id: "mysql", label: "MySQL" },
       { id: "postgres", label: "PostgreSQL" },
-      { id: "sqlite", label: "SQLite" },
-      { id: "mongo", label: "MongoDB" },
+      { id: "schema", label: "Schema Design" },
+      { id: "transactions", label: "Transactions" },
+      { id: "query-opt", label: "Query Optimization" },
     ],
   },
   {
+    id: "frontend",
+    label: "FRONTEND",
+    icon: "/icon/category_frontend.svg",
+    skills: [
+      { id: "ts", label: "TypeScript" },
+      { id: "vue", label: "Vue.js" },
+      { id: "react", label: "React.js" },
+      { id: "next", label: "Next.js" },
+      { id: "tailwind", label: "Tailwind CSS" },
+    ],
+  },
+  {
+    // id stays "tools" so the summary's Tools count keeps working
     id: "tools",
-    label: "TOOLS & DEVOPS",
+    label: "DEVOPS",
     icon: "/icon/category_tools_devops.svg",
     skills: [
+      { id: "linux-vps", label: "Linux VPS" },
+      { id: "nginx", label: "Nginx" },
+      { id: "gha", label: "GitHub Actions (CI/CD)" },
       { id: "git", label: "Git" },
-      { id: "github", label: "GitHub" },
-      { id: "docker", label: "Docker" },
-      { id: "postman", label: "Postman" },
-      { id: "linux", label: "Linux" },
-      { id: "cyber", label: "CyberPanel" },
+    ],
+  },
+  {
+    id: "data-ai",
+    label: "DATA & AI",
+    icon: "/icon/other_data_analytics.svg",
+    skills: [
+      { id: "python", label: "Python" },
+      { id: "opencv", label: "OpenCV" },
+      { id: "ml", label: "Machine Learning (Classification)" },
     ],
   },
 ];
@@ -77,24 +87,18 @@ const PERCENT: Record<string, number> = {
   laravel: 90,
   codeigniter: 82,
   node: 78,
-  python: 70,
   rest: 75,
-  react: 72,
-  ts: 68,
-  vue: 82,
-  js: 70,
-  html: 72,
-  css: 85,
   mysql: 90,
   postgres: 75,
-  sqlite: 60,
-  mongo: 55,
+  ts: 68,
+  vue: 82,
+  react: 72,
+  tailwind: 85,
+  nginx: 75,
+  gha: 72,
   git: 90,
-  github: 72,
-  docker: 78,
-  postman: 72,
-  linux: 72,
-  cyber: 70,
+  python: 70,
+  // [ISI: persentase] soap, integration, schema, transactions, query-opt, next, linux-vps, opencv, ml
 };
 
 export default function SkillsPanel() {
@@ -156,7 +160,8 @@ export default function SkillsPanel() {
 
             <div className="skills-vertical-list" role="list">
               {cat.skills.map((s) => {
-                const pct = PERCENT[s.id] ?? 0;
+                // Skills without a stated percentage show no bar rather than a made-up number
+                const pct = PERCENT[s.id];
                 return (
                   <div key={s.id} className="skill-row" role="listitem" tabIndex={0} onMouseEnter={(e) => showTip(`${s.label}`, e)} onMouseLeave={hideTip} onFocus={(e) => showTip(`${s.label}`, e)} onBlur={hideTip}>
                     <div className="skill-meta">
@@ -164,13 +169,15 @@ export default function SkillsPanel() {
                       <span className="skill-name">{s.label}</span>
                     </div>
 
-                    <div className="skill-percent">
-                      <div className="percent-rail" aria-hidden="true">
-                        <div className="percent-fill" style={{ width: `${pct}%` }} />
-                      </div>
+                    {pct !== undefined && (
+                      <div className="skill-percent">
+                        <div className="percent-rail" aria-hidden="true">
+                          <div className="percent-fill" style={{ width: `${pct}%` }} />
+                        </div>
 
-                      <div className="percent-label">{pct}%</div>
-                    </div>
+                        <div className="percent-label">{pct}%</div>
+                      </div>
+                    )}
                   </div>
                 );
               })}

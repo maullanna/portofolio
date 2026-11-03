@@ -210,7 +210,7 @@ export default function Desktop() {
   const getTitle = (win: WindowState) => {
     if (win.id === "project-detail") {
       const project = projects.find((p) => p.id === selectedProjectId);
-      return project ? `Project Details — ${project.name}` : win.title;
+      return project ? `Project Details | ${project.name}` : win.title;
     }
     return win.title;
   };

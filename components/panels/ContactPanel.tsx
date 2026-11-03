@@ -65,6 +65,11 @@ export default function ContactPanel({ onOpenCV }: ContactPanelProps) {
             <DocumentIcon size={18} className="shrink-0" />
             Preview my CV (PDF)
           </button>
+
+          <a href={profile.cvPath} download className="win-bevel-in flex items-center gap-2" style={rowStyle}>
+            <DocumentIcon size={18} className="shrink-0" />
+            Download CV
+          </a>
         </div>
       </div>
     </div>

@@ -43,7 +43,7 @@ export default function CVPanel() {
       {isMobile ? (
         <div className="flex-1 flex flex-col items-center justify-center gap-4 p-8 text-center">
           <DocumentIcon size={56} />
-          <div style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 22 }}>{profile.name} — CV</div>
+          <div style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 22 }}>{profile.name} | CV</div>
           <p style={{ fontSize: 13, color: "var(--text-muted)", maxWidth: 320 }}>
             Your browser can&apos;t show the PDF inside this window. Open it in a new tab to read it, or download it directly.
           </p>

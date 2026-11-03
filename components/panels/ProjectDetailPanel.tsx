@@ -133,7 +133,7 @@ export default function ProjectDetailPanel({ project }: ProjectDetailPanelProps)
           </div>
           <div className="flex items-center justify-between gap-4">
             <span style={{ color: "var(--text-muted)" }}>Started</span>
-            <span>{project.startDate ?? "—"}</span>
+            <span>{project.startDate ?? "-"}</span>
           </div>
           <div className="flex items-center justify-between gap-4">
             <span style={{ color: "var(--text-muted)" }}>Released</span>
@@ -141,7 +141,7 @@ export default function ProjectDetailPanel({ project }: ProjectDetailPanelProps)
           </div>
           <div className="flex items-center justify-between gap-4">
             <span style={{ color: "var(--text-muted)" }}>Duration</span>
-            <span>{duration ?? "—"}</span>
+            <span>{duration ?? "-"}</span>
           </div>
         </div>
       </div>
@@ -282,7 +282,7 @@ export default function ProjectDetailPanel({ project }: ProjectDetailPanelProps)
                   <div style={{ fontSize: "12px", color: "var(--text-muted)" }}>Milestones</div>
                 </div>
                 <div className="win-bevel-in text-center py-3" style={{ background: "var(--content-bg-alt)" }}>
-                  <div style={{ fontSize: "20px", fontWeight: 700, color: "var(--accent-dark)" }}>{duration ?? "—"}</div>
+                  <div style={{ fontSize: "20px", fontWeight: 700, color: "var(--accent-dark)" }}>{duration ?? "-"}</div>
                   <div style={{ fontSize: "12px", color: "var(--text-muted)" }}>Duration</div>
                 </div>
               </div>
@@ -394,7 +394,7 @@ export default function ProjectDetailPanel({ project }: ProjectDetailPanelProps)
                     { label: "Features", value: project.features.length },
                     { label: "Technologies", value: project.tech.length },
                     { label: "Milestones", value: project.milestones.length },
-                    { label: "Duration", value: duration ?? "—" },
+                    { label: "Duration", value: duration ?? "-" },
                   ].map((s) => (
                     <div key={s.label} className="win-bevel-in text-center py-2" style={{ background: "var(--content-bg)" }}>
                       <div style={{ fontSize: "16px", fontWeight: 700, color: "var(--accent-dark)" }}>{s.value}</div>
@@ -418,7 +418,7 @@ export default function ProjectDetailPanel({ project }: ProjectDetailPanelProps)
                           <span style={{ color: m.status === "done" ? "var(--success)" : "var(--warning)" }}>●</span>
                           <span style={{ color: "var(--text-muted)" }}>
                             {shortDate(m.date)}
-                            {m.time !== "—" ? ` · ${m.time}` : ""}
+                            {m.time !== "-" ? ` · ${m.time}` : ""}
                           </span>
                         </div>
                         <div style={{ marginLeft: 14 }}>{m.activity}</div>

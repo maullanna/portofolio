@@ -3,14 +3,14 @@ import { Project } from "@/types";
 export const projects: Project[] = [
   {
     id: "cbt-akti",
-    name: "CBT Platform",
+    name: "CBT Exam Platform",
     description: "Computer-Based Test for university entrance selection",
     longDescription:
       "Online exam platform for AKTI's new-student entrance selection (TPA), replacing a paid third-party platform that was vulnerable to cheating. Built solo, zero to production, with layered anti-cheating and mass participant management.",
     problem:
       "Paying Rp3,000,000/month for a third-party platform that frequently went down, had zero anti-cheating measures, and required staff 7 hours/day for manual data entry.",
     solution:
-      "Built from scratch — layered anti-cheating (OpenCV, secure browser lockdown, audio monitoring), bulk participant import via Excel, and a live monitoring dashboard.",
+      "Built from scratch: layered anti-cheating (OpenCV, secure browser lockdown, audio monitoring), bulk participant import via Excel, and a live monitoring dashboard.",
     tech: ["Laravel 12", "PHP 8.2", "Vue.js", "Blade", "MySQL", "OpenCV", "Cloud VPS"],
     techStack: {
       frontend: ["Vue.js", "Blade"],
@@ -40,8 +40,9 @@ export const projects: Project[] = [
     impact: [
       "Platform cost: Rp3,000,000/month → Rp0 (100% eliminated)",
       "Staff data management: 7 hours/day → 10 minutes (~98% reduction)",
-      "~18% average score drop after anti-cheating went live — proof the system works",
+      "~18% average score drop after anti-cheating went live, proving the system works",
       "2,000+ participants served across multiple sessions",
+      "Exam results used for scholarship selection",
     ],
     milestones: [
       { date: "01 Aug 2025", time: "19:00", activity: "Project started", status: "done" },
@@ -152,14 +153,14 @@ export const projects: Project[] = [
   },
   {
     id: "sis-vendor",
-    name: "SIS Vendor Project — UAT Lead",
+    name: "SIS Vendor Project | UAT Lead",
     description: "UAT lead & project coordinator for a Rp250M vendor system",
     longDescription:
       "Coordination and UAT for a Rp250,000,000 Student Information System (SIS) built by an external vendor for AKTI Karawang, covering the full academic lifecycle from student registration to graduation.",
     problem:
       "AKTI needed a complete Student Information System, but building it through an external vendor carried real risk of misalignment with actual institutional needs.",
     solution:
-      "Acted as UAT Lead — test coordination, vendor communication, and direct reporting to the Director.",
+      "Acted as UAT Lead: test coordination, vendor communication, and direct reporting to the Director.",
     tech: ["UAT Methodology", "JKK", "Bug Tracking", "Project Documentation"],
     techStack: {
       tools: ["UAT Methodology", "JKK", "Bug Tracking", "Project Documentation"],
@@ -187,12 +188,12 @@ export const projects: Project[] = [
       "Mentored by Manager and Unit Head in project coordination",
     ],
     milestones: [
-      { date: "Oct 2025", time: "—", activity: "UAT planning & test case preparation", status: "done" },
-      { date: "Nov 2025", time: "—", activity: "First round UAT — bug identification", status: "done" },
-      { date: "Dec 2025", time: "—", activity: "Vendor fix cycle coordination, round 1", status: "done" },
-      { date: "Feb 2026", time: "—", activity: "Second round UAT", status: "done" },
-      { date: "Apr 2026", time: "—", activity: "System partial go live", status: "done" },
-      { date: "Aug 2026", time: "—", activity: "Remaining features in progress", status: "in-progress" },
+      { date: "Oct 2025", time: "-", activity: "UAT planning & test case preparation", status: "done" },
+      { date: "Nov 2025", time: "-", activity: "First round UAT, bug identification", status: "done" },
+      { date: "Dec 2025", time: "-", activity: "Vendor fix cycle coordination, round 1", status: "done" },
+      { date: "Feb 2026", time: "-", activity: "Second round UAT", status: "done" },
+      { date: "Apr 2026", time: "-", activity: "System partial go live", status: "done" },
+      { date: "Aug 2026", time: "-", activity: "Remaining features in progress", status: "in-progress" },
     ],
   },
   {
@@ -200,11 +201,11 @@ export const projects: Project[] = [
     name: "FazTech Website",
     description: "Company profile & CCTV service website",
     longDescription:
-      "Company profile and service catalog website for FazTech, a CCTV and security systems business. Designed and built solo from scratch — UI/UX, frontend, backend, database, and deployment — with a full admin panel so the client can manage content independently.",
+      "Company profile and service catalog website for FazTech, a CCTV and security systems business. Designed and built solo from scratch (UI/UX, frontend, backend, database, and deployment), with a full admin panel so the client can manage content independently.",
     problem:
-      "Zero digital presence — 100% of leads came from word of mouth.",
+      "Zero digital presence: 100% of leads came from word of mouth.",
     solution:
-      "Built a complete website from scratch — product catalog, order inquiry, gallery, and admin panel.",
+      "Built a complete website from scratch: product catalog, order inquiry, gallery, and admin panel.",
     tech: ["CodeIgniter 3", "PHP", "HTML", "CSS", "JavaScript", "Bootstrap", "MySQL"],
     techStack: {
       frontend: ["HTML", "CSS", "JavaScript", "Bootstrap"],
@@ -237,9 +238,9 @@ export const projects: Project[] = [
     endDate: "28 Feb 2025",
     impact: [
       "Online presence: 0% → 100%",
-      "Client fully independent post-handover — no developer needed",
-      "Delivered solo in 2 months — design to deployment",
-      "Designed & built from scratch — no templates",
+      "Client fully independent post-handover, no developer needed",
+      "Delivered solo in 2 months, design to deployment",
+      "Designed & built from scratch, no templates",
     ],
     milestones: [
       { date: "01 Jan 2025", time: "10:00", activity: "Project started & requirements gathering", status: "done" },
@@ -257,9 +258,9 @@ export const projects: Project[] = [
     longDescription:
       "Web application for managing a company cooperative, replacing an entirely Excel-based workflow. Covers member management, savings & loans, installments, automated payroll, and role-based financial reporting.",
     problem:
-      "Everything tracked in Excel — one corrupted file meant lost data, with zero audit trail.",
+      "Everything tracked in Excel: one corrupted file meant lost data, with zero audit trail.",
     solution:
-      "Built a complete system — savings & loans, installment scheduling, auto-deducted payroll, and 3-tier role access.",
+      "Built a complete system: savings & loans, installment scheduling, auto-deducted payroll, and 3-tier role access.",
     tech: ["CodeIgniter 3", "PHP", "HTML", "CSS", "Bootstrap", "JavaScript", "MySQL"],
     techStack: {
       frontend: ["HTML", "CSS", "Bootstrap", "JavaScript"],
@@ -304,12 +305,12 @@ export const projects: Project[] = [
   },
   {
     id: "watersense",
-    name: "WaterSense — IoT Early Flood Detection",
-    description: "IoT flood-risk detection system — 2nd place, Innofest 2026",
+    name: "WaterSense | IoT Early Flood Detection",
+    description: "IoT flood-risk detection system, 2nd place, Innofest 2026",
     longDescription:
       "Early flood-detection system for flood-prone areas like the Citarum River. Water-level sensors are installed at critical points and connected to web and mobile dashboards for real-time monitoring and automated alerts.",
     problem:
-      "No early-warning system for floods in the area — monitoring was entirely manual.",
+      "No early-warning system for floods in the area, monitoring was entirely manual.",
     solution:
       "IoT water-level sensors connected to a web & mobile dashboard with automated push notifications.",
     tech: ["Arduino", "Raspberry Pi", "Python", "Laravel", "IoT Sensors"],
@@ -333,18 +334,18 @@ export const projects: Project[] = [
     url: "tinyurl.com/WaterSense-App",
     duration: "Innofest 2026 competition project",
     impact: [
-      "2nd Place — Innovation Festival (Innofest) 2026",
+      "2nd Place, Innovation Festival (Innofest) 2026",
       "Real-time flood early-warning system",
       "Automated push notifications and audio alerts",
-      "Team project — Yusuf as Fullstack Developer & Project Coordinator",
+      "Team project, Yusuf as Fullstack Developer & Project Coordinator",
     ],
     milestones: [
-      { date: "Mar 2026", time: "—", activity: "Project concept & team formation", status: "done" },
-      { date: "Apr 2026", time: "—", activity: "Hardware setup (Arduino + Raspberry Pi)", status: "done" },
-      { date: "Apr 2026", time: "—", activity: "IoT sensor integration & data pipeline", status: "done" },
-      { date: "May 2026", time: "—", activity: "Backend API & dashboard development", status: "done" },
-      { date: "May 2026", time: "—", activity: "Testing & demo preparation", status: "done" },
-      { date: "31 May 2026", time: "—", activity: "Innofest 2026 presentation — 2nd Place", status: "done" },
+      { date: "Mar 2026", time: "-", activity: "Project concept & team formation", status: "done" },
+      { date: "Apr 2026", time: "-", activity: "Hardware setup (Arduino + Raspberry Pi)", status: "done" },
+      { date: "Apr 2026", time: "-", activity: "IoT sensor integration & data pipeline", status: "done" },
+      { date: "May 2026", time: "-", activity: "Backend API & dashboard development", status: "done" },
+      { date: "May 2026", time: "-", activity: "Testing & demo preparation", status: "done" },
+      { date: "31 May 2026", time: "-", activity: "Innofest 2026 presentation, 2nd Place", status: "done" },
     ],
   },
   {
@@ -352,7 +353,7 @@ export const projects: Project[] = [
     name: "E-Library System",
     description: "Open-source library system deployment for AKTI",
     longDescription:
-      "Implementation of the open-source SLiMS digital library system for AKTI Karawang — installation, configuration, database migration from the legacy system, through to go-live on the institution's Cloud VPS.",
+      "Implementation of the open-source SLiMS digital library system for AKTI Karawang: installation, configuration, database migration from the legacy system, through to go-live on the institution's Cloud VPS.",
     problem:
       "AKTI had no digital library system in place.",
     solution:
@@ -378,8 +379,61 @@ export const projects: Project[] = [
     impact: [
       "Institution now has a fully functional digital library",
       "Full database migration from the legacy system",
-      "Zero to production — requirements to live",
+      "Zero to production: requirements to live",
     ],
+    milestones: [],
+  },
+  {
+    id: "asrama-akti",
+    name: "Dormitory Attendance System",
+    description: "Dormitory student attendance system for AKTI",
+    longDescription: "Dormitory student attendance system for AKTI Karawang. [ISI: deskripsi singkat]",
+    problem: "[ISI: masalah sebelum sistem ini ada]",
+    solution: "[ISI: solusi yang dibangun]",
+    tech: ["[ISI: stack]"],
+    techStack: {},
+    features: ["[ISI: fungsi utama]"],
+    iconKey: "idcard",
+    status: "completed",
+    url: "asrama.akti.ac.id",
+    impact: ["[ISI: jumlah pengguna]"],
+    milestones: [],
+  },
+  {
+    id: "simuda",
+    name: "SIMUDA",
+    description: "In Development. QR-based attendance system for a community study group",
+    longDescription:
+      "In Development. QR-based attendance system for a community study group of around 70 participants, built with Next.js, TypeScript and PostgreSQL. Not yet in production.",
+    problem: "[ISI: masalah sebelumnya]",
+    solution: "QR-based attendance system built with Next.js, TypeScript and PostgreSQL.",
+    tech: ["Next.js", "TypeScript", "PostgreSQL"],
+    techStack: {
+      frontend: ["Next.js", "TypeScript"],
+      database: ["PostgreSQL"],
+    },
+    features: ["QR-Based Attendance", "[ISI: fitur lainnya]"],
+    iconKey: "idcard",
+    status: "in-development",
+    impact: ["Built for a community study group of ~70 participants", "In development, not yet in production"],
+    milestones: [],
+  },
+  {
+    id: "food-freshness",
+    name: "Food Freshness Classification Model",
+    description: "Machine learning classifier for spoiled vs edible food, GDSC HackFest 2024",
+    longDescription:
+      "Trained a machine learning classifier to distinguish spoiled food from edible food, built at GDSC HackFest 2024 (Google Developer Student Clubs, sponsored by Telkom Indonesia) with Team Arthemis.",
+    problem: "[ISI: masalah yang diangkat]",
+    solution: "A trained machine learning classification model that labels food as spoiled or edible.",
+    tech: ["Machine Learning (Classification)", "[ISI: bahasa & library]"],
+    techStack: {
+      tools: ["Machine Learning (Classification)"],
+    },
+    features: ["Spoiled vs Edible Food Classification", "[ISI: fitur lainnya]"],
+    iconKey: "chart",
+    status: "completed",
+    impact: ["Built at GDSC HackFest 2024 with Team Arthemis", "[ISI: akurasi model / hasil]"],
     milestones: [],
   },
 ];

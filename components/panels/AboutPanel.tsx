@@ -56,7 +56,7 @@ export default function AboutPanel() {
             </tbody>
           </table>
 
-          <p className="order-3 @4xl:order-none" style={{ color: "var(--text-muted)", lineHeight: 1.6 }}>{profile.about}</p>
+          <p className="order-3 @4xl:order-none" style={{ color: "var(--text-muted)", lineHeight: 1.6, whiteSpace: "pre-line" }}>{profile.about}</p>
 
           <Section title="EDUCATION" className="order-5 @4xl:order-none">
             <div className="flex flex-col gap-2">
