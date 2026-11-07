@@ -27,6 +27,10 @@ export interface Project {
   features: string[];
   iconKey: ProjectIconKey;
   status: "completed" | "in-development";
+  /** Delivery approach, drives the phase strip in the Journey views */
+  methodology?: Methodology;
+  /** Extra context shown under the methodology badge */
+  methodologyNote?: string;
   url?: string;
   github?: string;
   startDate?: string;
@@ -36,6 +40,8 @@ export interface Project {
   milestones: Milestone[];
   screenshots?: string[];
 }
+
+export type Methodology = "waterfall" | "agile" | "hybrid";
 
 export interface Milestone {
   date: string;
@@ -50,6 +56,7 @@ export interface JourneyEntry {
   activity: string;
   project: string;
   status: "done" | "in-progress";
+  methodology?: Methodology;
 }
 
 export interface WorkExperience {

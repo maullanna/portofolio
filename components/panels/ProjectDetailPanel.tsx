@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import { createPortal } from "react-dom";
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, TooltipContentProps } from "recharts";
-import { CHART_UP, CHART_GRID, CHART_TEXT } from "@/lib/chartTheme";
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceArea, TooltipContentProps } from "recharts";
+import { CHART_GRID, CHART_TEXT, CHART_UP, METHOD_COLOR } from "@/lib/chartTheme";
 import { Project } from "@/types";
+import { METHOD_META, MilestoneStepper, plannedPhaseCount } from "./Methodology";
 import {
   projectIcons,
   DocumentIcon,
@@ -49,14 +50,76 @@ function daySpan(start?: string, end?: string): string | null {
   return days >= 0 ? `${days} days` : null;
 }
 
+type ProgressPoint = { i: number; label: string; time: string; activity: string; planned?: number; iterative?: number };
+
 function JourneyTooltip({ active, payload }: TooltipContentProps) {
   if (!active || !payload?.length) return null;
-  const point = payload[0].payload as { label: string; time: string; activity: string };
+  const point = payload[0].payload as ProgressPoint;
   return (
     <div className="px-2 py-1.5 text-xs" style={{ background: "#1c2030", border: "1px solid var(--chart-grid)", fontFamily: "var(--font-mono)" }}>
       <div className="font-bold" style={{ color: "#e8e8e8" }}>{point.label}</div>
       <div style={{ color: "var(--chart-text)" }}>{point.time}</div>
       <div style={{ color: "var(--chart-up)" }}>{point.activity}</div>
+    </div>
+  );
+}
+
+/**
+ * Cumulative milestone progress, drawn the way the project was run:
+ * waterfall phases as hard steps, agile iterations as a smooth line over
+ * alternating iteration bands, hybrid as steps that turn into iterations.
+ */
+function ProgressChart({ project }: { project: Project }) {
+  const ms = project.milestones;
+  const method = project.methodology;
+  const planned = Math.min(plannedPhaseCount(project), ms.length - 1);
+  const data: ProgressPoint[] = ms.map((m, i) => ({
+    i,
+    label: shortDate(m.date),
+    time: m.time,
+    activity: m.activity,
+    planned: i <= planned && planned > 0 ? i + 1 : undefined,
+    iterative: i >= planned && planned < ms.length - 1 ? i + 1 : undefined,
+  }));
+  const planColor = method ? METHOD_COLOR.waterfall : CHART_UP;
+  const iterColor = method ? METHOD_COLOR.agile : CHART_UP;
+  const bands = data.slice(planned, -1).filter((_, k) => k % 2 === 0);
+
+  return (
+    <div style={{ height: 180 }}>
+      <ResponsiveContainer width="100%" height="100%">
+        <AreaChart data={data} margin={{ top: 8, right: 24, left: 0, bottom: 0 }}>
+          <defs>
+            {[["plan", planColor], ["iter", iterColor]].map(([id, color]) => (
+              <linearGradient key={id} id={`progressFill-${id}`} x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor={color} stopOpacity={0.35} />
+                <stop offset="100%" stopColor={color} stopOpacity={0} />
+              </linearGradient>
+            ))}
+          </defs>
+          <CartesianGrid strokeDasharray="3 3" stroke={CHART_GRID} vertical={false} />
+          {method &&
+            bands.map((b) => <ReferenceArea key={b.i} x1={b.i} x2={b.i + 1} fill={iterColor} fillOpacity={0.07} stroke="none" ifOverflow="hidden" />)}
+          <XAxis
+            dataKey="i"
+            type="number"
+            domain={[0, Math.max(ms.length - 1, 1)]}
+            ticks={data.map((d) => d.i)}
+            interval={0}
+            padding={{ left: 16, right: 0 }}
+            tickFormatter={(i: number) => data[i]?.label ?? ""}
+            tick={{ fontSize: 11, fill: CHART_TEXT }}
+            axisLine={{ stroke: CHART_GRID }}
+            tickLine={false}
+          />
+          <YAxis allowDecimals={false} tick={{ fontSize: 11, fill: CHART_TEXT }} axisLine={false} tickLine={false} width={24} />
+          <Tooltip content={JourneyTooltip} cursor={{ stroke: CHART_TEXT, strokeDasharray: "3 3" }} />
+          {planned > 0 && (
+            <Area type="stepAfter" dataKey="planned" stroke={planColor} strokeWidth={2.5} fill="url(#progressFill-plan)" dot={{ r: 4, fill: planColor, strokeWidth: 0 }} isAnimationActive={false} />
+          )}
+          <Area type="monotone" dataKey="iterative" stroke={iterColor} strokeWidth={2.5} fill="url(#progressFill-iter)" dot={{ r: 4, fill: iterColor, strokeWidth: 0 }} isAnimationActive={false} />
+        </AreaChart>
+      </ResponsiveContainer>
     </div>
   );
 }
@@ -84,13 +147,6 @@ export default function ProjectDetailPanel({ project }: ProjectDetailPanelProps)
     { label: "Technologies", value: project.tech.length },
     { label: "Highlights", value: project.impact.length },
   ];
-
-  const activityData = project.milestones.map((m, i) => ({
-    label: shortDate(m.date),
-    time: m.time,
-    activity: m.activity,
-    progress: i + 1,
-  }));
 
   const recentActivity = [...project.milestones].reverse().slice(0, 5);
 
@@ -236,44 +292,28 @@ export default function ProjectDetailPanel({ project }: ProjectDetailPanelProps)
               </div>
 
               <div className="win-bevel-in" style={{ background: "var(--chart-bg)" }}>
-                <div className="flex items-center justify-between px-3 pt-3 pb-1">
+                <div className="flex items-center justify-between gap-3 px-3 pt-3 pb-1">
                   <div>
                     <div style={{ fontSize: "10px", color: "var(--chart-text)", letterSpacing: "0.05em" }}>PROGRESS / MILESTONES</div>
                     <div style={{ fontSize: "22px", fontWeight: 700, color: "#e8e8e8" }}>{project.milestones.length}</div>
                   </div>
-                  <div
-                    className="px-2 py-1"
-                    style={{ fontSize: "12px", fontWeight: 700, color: "var(--chart-up)", background: "rgba(38, 166, 154, 0.12)" }}
-                  >
-                    ▲ 100%
+                  {project.methodology ? (
+                    <div className="px-2 py-1" style={{ fontSize: "12px", fontWeight: 700, color: METHOD_COLOR[project.methodology], background: "rgba(255, 255, 255, 0.06)" }}>
+                      {METHOD_META[project.methodology].label}
+                    </div>
+                  ) : (
+                    <div className="px-2 py-1" style={{ fontSize: "12px", fontWeight: 700, color: "var(--chart-up)", background: "rgba(38, 166, 154, 0.12)" }}>
+                      ▲ 100%
+                    </div>
+                  )}
+                </div>
+                {project.methodology && (
+                  <div className="px-3 pb-1" style={{ fontSize: "11px", color: "var(--chart-text)", lineHeight: 1.4 }}>
+                    {project.methodologyNote ?? METHOD_META[project.methodology].blurb}
                   </div>
-                </div>
+                )}
 
-                <div style={{ height: 180 }}>
-                  <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={activityData} margin={{ top: 8, right: 16, left: -12, bottom: 0 }}>
-                      <defs>
-                        <linearGradient id="progressFill" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="0%" stopColor={CHART_UP} stopOpacity={0.35} />
-                          <stop offset="100%" stopColor={CHART_UP} stopOpacity={0} />
-                        </linearGradient>
-                      </defs>
-                      <CartesianGrid strokeDasharray="3 3" stroke={CHART_GRID} vertical={false} />
-                      <XAxis dataKey="label" tick={{ fontSize: 11, fill: CHART_TEXT }} axisLine={{ stroke: CHART_GRID }} tickLine={false} />
-                      <YAxis allowDecimals={false} tick={{ fontSize: 11, fill: CHART_TEXT }} axisLine={false} tickLine={false} width={24} />
-                      <Tooltip content={JourneyTooltip} cursor={{ stroke: CHART_TEXT, strokeDasharray: "3 3" }} />
-                      <Area
-                        type="monotone"
-                        dataKey="progress"
-                        stroke={CHART_UP}
-                        strokeWidth={2.5}
-                        fill="url(#progressFill)"
-                        dot={{ r: 4, fill: CHART_UP, strokeWidth: 0 }}
-                        isAnimationActive={false}
-                      />
-                    </AreaChart>
-                  </ResponsiveContainer>
-                </div>
+                <ProgressChart project={project} />
               </div>
 
               <div className="responsive-grid grid gap-3" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))" }}>
@@ -289,25 +329,7 @@ export default function ProjectDetailPanel({ project }: ProjectDetailPanelProps)
 
               <div>
                 <div className="mb-2" style={{ fontSize: "14px", fontWeight: 700 }}>MILESTONE</div>
-                <div className="overflow-x-auto pb-2">
-                  <div className="flex items-start" style={{ width: "max-content" }}>
-                    {project.milestones.map((m, i) => (
-                      <div key={`${m.date}-${m.activity}`} className="flex items-start">
-                        <div className="flex flex-col items-center text-center" style={{ width: 130 }}>
-                          <span
-                            className="win-bevel-out rounded-full"
-                            style={{ width: 14, height: 14, background: m.status === "done" ? "var(--success)" : "var(--warning)" }}
-                          />
-                          <div className="mt-2 font-bold" style={{ fontSize: "13px" }}>{m.activity}</div>
-                          <div style={{ fontSize: "12px", color: "var(--text-muted)" }}>{shortDate(m.date)}</div>
-                        </div>
-                        {i < project.milestones.length - 1 && (
-                          <div className="mt-[6px]" style={{ width: 32, height: 2, background: "var(--border-shadow)" }} />
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                <MilestoneStepper milestones={project.milestones} />
               </div>
             </div>
           )
